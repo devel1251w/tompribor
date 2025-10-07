@@ -1,0 +1,1446 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Каталог приборов</title>
+<style>
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #1a2d40;
+  }
+
+/* Хидер внутри секции — без тени */
+.header-section {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  padding: 3px 10px 14px 14px;
+  border-radius: 8px;
+
+  /* стеклянный фон с лёгкой прозрачностью */
+  background: linear-gradient(135deg, rgba(215, 236, 255, 0.4), rgba(188, 223, 255, 0.25));
+  border: 1px solid rgba(159, 202, 247, 0.6);
+  backdrop-filter: saturate(160%) contrast(105%);
+  -webkit-backdrop-filter: saturate(160%) contrast(105%);
+
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.header-text {
+  flex: 1;
+  font-size: 15px;
+  line-height: 1.5;
+  margin-right: 16px;
+}
+
+
+.header-images img {
+  height: auto;
+  max-height: 200px;    /* ограничиваем высоту, чтобы не выше текста */
+  width: auto;
+  flex: 1 1 auto;       /* картинки делят доступное пространство равномерно */
+  object-fit: contain;
+  border-radius: 12px;
+  border: 2px solid #9fcaf7;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+
+  .header-title {
+    font-weight: 700;
+    font-size: 22px;
+    color: #0c4a8c;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: auto;
+  border-radius: 6px;
+  overflow: hidden;
+
+  background: transparent; /* полностью прозрачный фон */
+  border: 1px solid rgba(198, 224, 249, 0.6); /* рамка с лёгкой прозрачностью */
+<!--  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* мягкая тень */-->
+  margin-bottom: 12px;
+}
+
+
+  thead th {
+    background: #0c4a8c;
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #0a3a6c;
+  }
+
+tbody td {
+  padding: 10px 14px;
+  text-align: center;
+  font-size: 14px;
+  color: #1a2d40;
+  border: 1px solid rgba(214, 235, 252, 0.6);
+
+  background: rgba(255, 255, 255, 0.25); /* полупрозрачный белый */
+  backdrop-filter: saturate(160%); /* усиливает цвета подложки, без размытия */
+  -webkit-backdrop-filter: saturate(160%);
+
+  line-height: 1;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+/* убираем чередование строк */
+tbody tr:nth-child(even) td {
+  background: transparent; /* полностью прозрачный фон */
+}
+
+/* убираем подсветку при наведении */
+tbody tr:hover td {
+  background: transparent; /* полностью прозрачный фон */
+  transition: none;
+}
+
+
+  td span.optional {
+    font-style: italic;
+    color: #557a9e;
+    font-size: 0.85em;
+  }
+
+  .note {
+    font-size: 0.9em;
+    font-style: italic;
+    color: #47688a;
+    margin-top: 8px;
+    text-align: right;
+  }
+
+  .cell-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .cell-list div {
+    padding: 3px 0;
+    border-bottom: 1px dashed #c6e0f9;
+  }
+
+  .cell-list div:last-child {
+    border-bottom: none;
+  }
+
+.param-block {
+  margin-top: 12px;
+  padding: 12px 14px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(234, 246, 255, 0.45),
+    rgba(200, 230, 255, 0.25)
+  ); /* нежный стеклянный градиент */
+
+  border-left: 4px solid rgba(12, 74, 140, 0.7);
+  border-radius: 6px;
+  color: #1a2d40;
+  font-size: 14px;
+  line-height: 1.5;
+
+  backdrop-filter: saturate(160%) contrast(110%);
+  -webkit-backdrop-filter: saturate(160%) contrast(110%);
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+  .param-block span {
+    font-weight: 600;
+    color: #0c4a8c;
+  }
+
+  .extra-options {
+    margin-top: 30px;
+  }
+
+  .extra-options h3 {
+    font-size: 18px;
+    color: #0c4a8c;
+    margin-bottom: 14px;
+    border-bottom: 2px solid #9fcaf7;
+    display: inline-block;
+    padding-bottom: 2px;
+  }
+
+  .options-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+
+  .option-card {
+    flex: 1 1 220px;
+    background: #fff;
+    border: 1px solid #c6e0f9;
+    border-radius: 6px;
+    padding: 14px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .option-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+  }
+
+  .option-card img {
+    max-width: 70px;
+    max-height: 70px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 2px solid #9fcaf7;
+    background: #f4faff;
+    padding: 4px;
+  }
+
+  .option-card p {
+    font-size: 13px;
+    color: #1a2d40;
+    line-height: 1.4;
+  }
+
+  .table_subtext {
+    font-style: italic;
+    color: #557a9e;
+    font-size: 0.75em;
+  }
+
+.page-content {
+  padding-top: 5mm;   /* отступ сверху страницы */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.item {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin-bottom: 3mm;
+
+  border: 2px solid rgba(159, 202, 247, 0.6); /* чуть прозрачная голубая рамка */
+  border-radius: 8px;
+
+  background: rgba(255, 255, 255, 0.6); /* белый с лёгкой прозрачностью */
+  backdrop-filter: blur(10px) saturate(150%); /* эффект размытия заднего фона */
+  -webkit-backdrop-filter: blur(10px) saturate(150%); /* поддержка Safari */
+
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1); /* мягкая тень */
+  padding: 18px;
+}
+
+.header-images {
+  display: flex;
+  flex-direction: column; /* текст сверху, картинки снизу */
+  align-items: center;
+  max-width: 50%;
+}
+
+.images-label {
+  background: linear-gradient(135deg, #d7ecff, #bcdfff);
+  border: 1px solid #9fcaf7;
+  border-radius: 6px;
+  padding: 4px 10px;       /* чуть компактнее */
+  font-size: 13px;         /* текст немного меньше */
+  font-weight: 600;
+  color: #0c4a8c;
+  margin: 2px 0 4px 0;     /* верхний отступ всего 2px, нижний 8px */
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.images-wrapper {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  justify-content: center;
+}
+
+  .br_column {
+      width: 170px;              /* ширина колонки */
+  }
+
+    @page {
+  size: A4;
+  margin: 0mm;
+}
+
+/* Фон для всей страницы */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("bg3.png") center/cover no-repeat;
+  z-index: -1;
+}
+
+</style>
+</head>
+<body>
+  <div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ ТЕХНИЧЕСКИЕ</div>
+      <div>Предназначены для измерения избыточного и вакуумметрического давления не агрессивных по отношению к медным сплавам, не вязких и не кристаллизующихся  жидкостей, пара и газа, в том числе кислорода, ацетилена, хладонов.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +150 (+250)  *.</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70.</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ1.11 Р; Тц<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>40 мм</td>
+      <td><div class="cell-list"><div>0 – 0,16…25 МПа</div></div></td>
+      <td>M10×1<br><span class='optional'>G1/8¹</span></td>
+      <td rowspan="2">2,5</td>
+      <td rowspan="6">IP42<br><span class='optional'>IP40¹</span><br><span class='optional'>IP43¹</span></td>
+      <td rowspan="6">У2<br><span class='optional'>У1¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td rowspan="6">L3<br><span class='optional'>L1¹</span><br><span class='optional'>L2¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ2.11 Р; Тц<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>50 мм</td>
+      <td><div class="cell-list"><div>0 - 0,25; 0,4; 0,6; 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td rowspan="2">M12×1,5<br><span class='optional'>G1/4¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ3.11 Р; Тц<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>63 мм</td>
+      <td rowspan="3"><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td>2,5<br><span class='optional'>1,5¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ5.11 Р; Тэ<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>100 мм</td>
+      <td rowspan="3">М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td rowspan="3">1,5<br><span class='optional'>1,0¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ6.11 Р; Тэ<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>160 мм</td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ7.11 Р<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>250 мм</td>
+      <td><div class="cell-list"><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ ТЕХНИЧЕСКИЕ СВАРОЧНЫЕ (ГАЗОВЫЕ)</div>
+      <div>Предназначены для измерения избыточного и вакуумметрического давления не агрессивных по отношению к медным сплавам, не вязких и не кристаллизующихся  жидкостей, пара и газа, в том числе кислорода, ацетилена, хладонов.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +150 (+250)  *.</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70.</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ2.11 О2 Р<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td rowspan="3">50 мм</td>
+      <td><div class="cell-list"><div>0 - 1,0; 2,5; 16; 25; 40 МПа</div></div></td>
+      <td rowspan="3">M12×1,5<br><span class='optional'>G1/41¹</span></td>
+      <td rowspan="3">2,5</td>
+      <td rowspan="3">IP42<br><span class='optional'>IP40¹</span><br><span class='optional'>IP43¹</span></td>
+      <td rowspan="3">У2<br><span class='optional'>У1¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td rowspan="3">L3<br><span class='optional'>L1¹</span><br><span class='optional'>L2¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ2.11 С2Н2 Р<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td><div class="cell-list"><div>0 - 0,4; 4,0 МПа</div></div></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ2.11 С3Н8 Р<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td><div class="cell-list"><div>0 - 0,6 МПа</div></div></td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ ТЕХНИЧЕСКИЕ ЭКОНОМ</div>
+      <div>Предназначены для измерения избыточного и вакуумметрического давления не агрессивных по отношению к медным сплавам, не вязких и не кристаллизующихся  жидкостей, пара и газа, в том числе кислорода, ацетилена, хладонов.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +150 (+250) оС *.</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70.</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ5.11 МЭ Р<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>100 мм</td>
+      <td><div class="cell-list"><div>0 - 600 кПа;</div><div>0 - 1,0; 1,6; 2,5 МПа</div></div></td>
+      <td>М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td>1,5</td>
+      <td>IP42</td>
+      <td>У2</td>
+      <td>L3</td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ ТЕХНИЧЕСКИЕ ПЫЛЕВЛАГОЗАЩИЩЕННЫЕ</div>
+      <div>Предназначены для измерения избыточного и вакуумметрического давления не агрессивных по отношению к медным сплавам, не вязких и не кристаллизующихся  жидкостей, пара и газа, в том числе кислорода, ацетилена, хладонов.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +150 (+250) оС *.</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70.</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ5.11 IP54 Р; Тэ<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>100 мм</td>
+      <td rowspan="2"><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td rowspan="2">М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td rowspan="2">1,5<br><span class='optional'>1,0¹</span></td>
+      <td rowspan="2">IP54<br><span class='optional'>IP53¹</span><br><span class='optional'>IP55¹</span></td>
+      <td rowspan="2">У2<br><span class='optional'>У1¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td rowspan="2">L3<br><span class='optional'>L1¹</span><br><span class='optional'>L2¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ6.11 IP54 Р; Тэ<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>160 мм</td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ ТЕХНИЧЕСКИЕ ПЫЛЕВЛАГОЗАЩИЩЕННЫЕ БАЙОНЕТНОЕ СОЕДИНЕНИЕ</div>
+      <div>Предназначены для измерения избыточного и вакуумметрического давления не агрессивных по отношению к медным сплавам, не вязких и не кристаллизующихся  жидкостей, пара и газа, в том числе кислорода, ацетилена, хладонов.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +150 (+250) оС *.</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70.</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ5.11 БС Р<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>100 мм</td>
+      <td rowspan="2"><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td rowspan="2">М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td rowspan="2">1,0<br><span class='optional'>1,5¹</span></td>
+      <td rowspan="2">IP54<br><span class='optional'>IP53¹</span><br><span class='optional'>IP55¹</span><br><span class='optional'>IP65¹</span><br><span class='optional'>IP66¹</span><br><span class='optional'>IP67¹</span><br><span class='optional'>IP68¹</span></td>
+      <td rowspan="2">УХЛ1<br><span class='optional'>Т1, Т2, Т3¹</span><br><span class='optional'>У1¹</span><br><span class='optional'>У2¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td rowspan="2">L3<br><span class='optional'>L1¹</span><br><span class='optional'>L2¹</span><br><span class='optional'>N1¹</span><br><span class='optional'>N2¹</span><br><span class='optional'>N3¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ6.11 БС Р<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>160 мм</td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ ТЕХНИЧЕСКИЕ АММИАЧНЫЕ</div>
+      <div>Предназначены для измерения избыточного и вакуумметрического давления не вязких и не кристаллизующихся жидкостей, пара и газа, в том числе аммиака.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +150 (+250) оС *.</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70.</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ5.13 NH3 Р<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - нержавеющая сталь</span></td>
+      <td>100 мм</td>
+      <td rowspan="2"><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td rowspan="2">М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td rowspan="2">1,5<br><span class='optional'>1,0¹</span></td>
+      <td rowspan="2">IP42<br><span class='optional'>IP40¹</span><br><span class='optional'>IP43¹</span></td>
+      <td rowspan="2">У2<br><span class='optional'>У1¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td rowspan="2">L3<br><span class='optional'>L1¹</span><br><span class='optional'>L2¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ6.13 NH3 Р<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - нержавеющая сталь</span></td>
+      <td>160 мм</td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ технические аммиачные пылевлагозащищенные</div>
+      <div>Предназначены для измерения избыточного и вакуумметрического давления не вязких и не кристаллизующихся жидкостей, пара и газа, в том числе аммиака.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +150 (+250) оС *.</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70.</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ5.13 NH3 Р<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - нержавеющая сталь</span></td>
+      <td>100 мм</td>
+      <td rowspan="2"><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td rowspan="2">М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td rowspan="2">1,5<br><span class='optional'>1,0¹</span></td>
+      <td rowspan="2">IP54<br><span class='optional'>IP53¹</span><br><span class='optional'>IP55¹</span></td>
+      <td rowspan="2">У2<br><span class='optional'>У1¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td rowspan="2">L3<br><span class='optional'>L1¹</span><br><span class='optional'>L2¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ6.13 NH3 Р<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - нержавеющая сталь</span></td>
+      <td>160 мм</td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ ЭЛЕКТРОКОНТАКТНЫЕ</div>
+      <div>Предназначены для измерения избыточного и вакуумметрического давления не агрессивных по отношению к медным сплавам, не вязких и не кристаллизующихся  жидкостей, пара и газа, в том числе кислорода, ацетилена, хладонов.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +150 (+250) оС *.</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70.</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ3.11 Сг Тц<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>63 мм</td>
+      <td rowspan="3"><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td>M10×1<br><span class='optional'>G1/8¹</span></td>
+      <td>2,5<br><span class='optional'>1,5¹</span></td>
+      <td rowspan="3">IP42<br><span class='optional'>IP40¹</span><br><span class='optional'>IP43¹</span></td>
+      <td rowspan="3">У2<br><span class='optional'>У1¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td rowspan="3">L3<br><span class='optional'>L1¹</span><br><span class='optional'>L2¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ5.11 Сг Р; Тэ<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>100 мм</td>
+      <td rowspan="2">М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td rowspan="2">1,5<br><span class='optional'>1,0¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ6.11 Сг Р; Тэ<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>160 мм</td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ ЭЛЕКТРОКОНТАКТНЫЕ пылевлагозащищенные</div>
+      <div>Предназначены для измерения избыточного и вакуумметрического давления не агрессивных по отношению к медным сплавам, не вязких и не кристаллизующихся  жидкостей, пара и газа, в том числе кислорода, ацетилена, хладонов.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +150 (+250) оС *.</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70.</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ5.11 Сг IP54 Р; Тэ<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>100 мм</td>
+      <td rowspan="2"><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td rowspan="2">М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td rowspan="2">1,5<br><span class='optional'>1,0¹</span></td>
+      <td rowspan="2">IP54<br><span class='optional'>IP53¹</span><br><span class='optional'>IP55¹</span></td>
+      <td rowspan="2">У2<br><span class='optional'>У1¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td rowspan="2">L3<br><span class='optional'>L1¹</span><br><span class='optional'>L2¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ6.11 Сг IP54 Р; Тэ<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>160 мм</td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ ЭЛЕКТРОКОНТАКТНЫЕ с возможностью гидрозаполнения</div>
+      <div>Предназначены для измерения избыточного и вакуумметрического давления неагрессивных по отношению к медным сплавам, не вязких и не кристаллизующихся сред и управления внешними электрическими цепями от сигнализирующего устройства прямого действия. При заполнении полости корпуса демпфирующей жидкостью (силикон) обеспечивается группа виброустойчивости V4 .</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +250 °С (без заполнения)* , от -50 до +150 °С (при заполнении силиконом-исполнение ИВС).</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70 °С (без заполнения), от -50 до +50 °С (при заполнении силиконом-исполнение ИВС).</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ3.21 Сг Тц ИВС<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>63 мм</td>
+      <td rowspan="3"><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td>M10×1<br><span class='optional'>G1/8¹</span></td>
+      <td>2,5<br><span class='optional'>1,5¹</span></td>
+      <td rowspan="3">IP54<br><span class='optional'>IP53¹</span><br><span class='optional'>IP55¹</span><br><span class='optional'>IP65¹</span></td>
+      <td rowspan="3">У2<br><span class='optional'>У1¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td rowspan="3">без заполнения: группа L3
+<span class='optional'>( L1; L2; N1; N2; N3)¹</span>. 
+С заполнением: группа V4</td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ5.21 Сг  Р; Тэ ИВГ<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>100 мм</td>
+      <td rowspan="2">М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td rowspan="2">1,5<br><span class='optional'>1,0¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ6.21 Сг Р; Тэ ИВС<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>160 мм</td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ ЭЛЕКТРОКОНТАКТНЫЕ с возможностью гидрозаполнения коррозионностойкие</div>
+      <div>предназначены для измерения избыточного и вакуумметрического давления различных не вязких и не кристаллизующихся сред и управления внешними электрическими цепями от сигнализирующего устройства прямого действия. При заполнении полости корпуса демпфирующей жидкостью (силикон) обеспечивается группа виброустойчивости V4 .</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +250 °С (без заполнения)* , от -50 до +150 °С (при заполнении силиконом-исполнение ИВС).</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70 °С (без заполнения), от -50 до +50 °С (при заполнении силиконом-исполнение ИВС).</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ3.22 Сг Тц ИВС<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - нержавеющая сталь</span></td>
+      <td>63 мм</td>
+      <td rowspan="3"><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td>M10×1<br><span class='optional'>G1/8¹</span></td>
+      <td>2,5<br><span class='optional'>1,5¹</span></td>
+      <td rowspan="3">IP54<br><span class='optional'>IP53¹</span><br><span class='optional'>IP55¹</span><br><span class='optional'>IP65¹</span></td>
+      <td rowspan="3">У2<br><span class='optional'>У1¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td rowspan="3">без заполнения: группа L3
+<span class='optional'>( L1; L2; N1; N2; N3)¹</span>. 
+С заполнением: группа V4</td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ5.22 Сг Р; Тэ ИВС<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - нержавеющая сталь</span></td>
+      <td>100 мм</td>
+      <td rowspan="2">М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td rowspan="2">1,5<br><span class='optional'>1,0¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ6.22 Сг Р; Тэ ИВС<br><span class='table_subtext'>корпус -нержавеющая сталь</span><br><span class='table_subtext'>штуцер - нержавеющая сталь</span></td>
+      <td>160 мм</td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ виброустойчивые</div>
+      <div>предназначены для измерения избыточного и вакуумметрического давления неагрессивных по отношению к медным сплавам, не вязких и не кристаллизирующихся  жидкостей, пара и газа, в том числе кислорода, ацетилена, хладонов. Виброустойчивость приборов обеспечивается специальным виброустойчивым трибко-секторным механизмом с демпфирующими муфтами.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +250 °С *.</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70 °С.</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ5.21 Сву Р; Тэ<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>100 мм</td>
+      <td rowspan="2"><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td rowspan="2">М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td rowspan="2">1,0<br><span class='optional'>1,5¹</span></td>
+      <td rowspan="2">IP54<br><span class='optional'>IP53¹</span><br><span class='optional'>IP55¹</span><br><span class='optional'>IP65¹</span><br><span class='optional'>IP66¹</span><br><span class='optional'>IP67¹</span><br><span class='optional'>IP68¹</span></td>
+      <td rowspan="2">УХЛ1<br><span class='optional'>Т1, Т2, Т3¹</span><br><span class='optional'>У1¹</span><br><span class='optional'>У2¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td rowspan="2">группа V4</td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ6.21 Сву Р; Тэ<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>160 мм</td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ с возможностью гидрозаполнения</div>
+      <div>предназначены для измерения избыточного и вакуумметрического давления неагрессивных по отношению к медным сплавам, не вязких и некристаллизующихся жидкостей, пара и газа, в том числе кислорода, ацетилена, хладонов.  При заполнении полости корпуса демпфирующей жидкостью (глицерин, силикон) обеспечивается группа виброустойчивости V4.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +250 °С (без заполнения)*, от -50 до +120 °С (при заполнении глицерином-исполнение ИВГ), от -50 до +150 °С (при заполнении силиконом-исполнение ИВС).</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70 °С (без заполнения), от -40 до +60 °С (при заполнении глицерином-исполнение ИВГ), от -50 до +50 °С (при заполнении силиконом-исполнение ИВС).</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ1.21 Р; Тц<br>ДМ1.21 Р; Тц ИВГ<br>ДМ1.21 Р; Тц ИВС<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>40 мм</td>
+      <td rowspan="5"><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td>M10×1<br><span class='optional'>G1/8¹</span></td>
+      <td>2,5</td>
+      <td rowspan="5">IP54<br><span class='optional'>IP53¹</span><br><span class='optional'>IP55¹</span><br><span class='optional'>IP65¹</span><br><span class='optional'>IP66¹</span><br><span class='optional'>IP67¹</span><br><span class='optional'>IP68¹</span></td>
+      <td rowspan="5">УХЛ1<br><span class='optional'>Т1, Т2, Т3¹</span><br><span class='optional'>У1¹</span><br><span class='optional'>У2¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td rowspan="5">без заполнения: группа L3
+<span class='optional'>( L1; L2; N1; N2; N3)¹</span>. 
+С заполнением: группа V4</td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ2.21 Р; Тц<br>ДМ2.21 Р; Тц ИВГ<br>ДМ2.21 Р; Тц ИВС<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>50 мм</td>
+      <td rowspan="2">М12х1,5<br><span class='optional'>G1/4¹</span></td>
+      <td rowspan="2">2,5<br><span class='optional'>1,5¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ3.21 Р; Тц<br>ДМ3.21 Р; Тц ИВГ<br>ДМ3.21 Р; Тц ИВС<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>63 мм</td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ5.21 Р; Тэ<br>ДМ5.21 Р; Тэ ИВГ<br>ДМ5.21 Р; Тэ ИВС<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>100 мм</td>
+      <td rowspan="2">М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td rowspan="2">1,0<br><span class='optional'>1,5¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ6.21 Р; Тэ<br>ДМ6.21 Р; Тэ ИВГ<br>ДМ6.21 Р; Тэ ИВС<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>160 мм</td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ коррозионностойкие  с возможностью гидрозаполнения</div>
+      <div>предназначены для измерения избыточного, вакууметрического давления различных не вязких и не кристаллизирующихся сред, в т.ч. жидкого, газообразного и водного раствора аммиака, сероводородосодержащих сред, газоводонефтяной эмульсии с температурой до +150 °С, содержанием Н2S и СO2 до 25 % по объему каждого, нефти и нефтепродуктов с содержанием парафина до 10 % весовых. При заполнении полости корпуса демпфирующей жидкостью (глицерин, силикон) обеспечивается группа виброустойчивости V4.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +250 °С (без заполнения)*, от -50 до +120 °С (при заполнении глицерином-исполнение ИВГ), от -50 до +150 °С (при заполнении силиконом-исполнение ИВС).</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70 °С (без заполнения), от -40 до +60 °С (при заполнении глицерином-исполнение ИВГ),  от -50 до +50 °С (при заполнении силиконом-исполнение ИВС).</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ1.22 Тц<br>ДМ1.22 Тц ИВГ<br>ДМ1.22 Тц ИВС<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - нержавеющая сталь</span></td>
+      <td>40 мм</td>
+      <td rowspan="5"><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td>M10×1<br><span class='optional'>G1/8¹</span></td>
+      <td>2,5</td>
+      <td rowspan="5">IP65<br><span class='optional'>IP53¹</span><br><span class='optional'>IP54¹</span><br><span class='optional'>IP55¹</span><br><span class='optional'>IP66¹</span><br><span class='optional'>IP67¹</span><br><span class='optional'>IP68¹</span></td>
+      <td rowspan="5">УХЛ1<br><span class='optional'>Т1, Т2, Т3¹</span><br><span class='optional'>У1¹</span><br><span class='optional'>У2¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td rowspan="5">без заполнения: группа N2
+<span class='optional'>( L1; L2;L3; N1; N3)¹</span>. 
+С заполнением: группа V4</td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ2.22 Р; Тц<br>ДМ2.22 Р; Тц ИВГ<br>ДМ2.22 Р; Тц ИВС<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - нержавеющая сталь</span></td>
+      <td>50 мм</td>
+      <td rowspan="2">M12×1,5<br><span class='optional'>G1/4¹</span></td>
+      <td rowspan="2">2,5<br><span class='optional'>1,5¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ3.22 Р; Тэ<br>ДМ3.22 Р; Тэ ИВГ<br>ДМ3.22 Р; Тэ ИВС<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - нержавеющая сталь</span></td>
+      <td>63 мм</td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ5.22 Р; Тэ<br>ДМ5.22 Р; Тэ ИВГ<br>ДМ5.22 Р; Тэ ИВС<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - нержавеющая сталь</span></td>
+      <td>100 мм</td>
+      <td rowspan="2">М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td rowspan="2">1,0<br><span class='optional'>1,5¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ6.22 Р; Тэ<br>ДМ6.22 Р; Тэ ИВГ<br>ДМ6.22 Р; Тэ ИВС<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - нержавеющая сталь</span></td>
+      <td>160 мм</td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ железнодорожные</div>
+      <div>предназначены для измерения избыточного давления неагрессивных по отношению к медным сплавам, не вязких и не кристаллизирующихся жидких и газообразных сред (вода, топливо, масло, воздух) в силовых и тормозных системах и установках подвижного состава железных дорог, метрополитена и вагонов трамваев, а также для измерения давления хладонов 12, 13, 22, 142 (в том числе хладонов с наличием масел).</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +250 °С *.</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70 °С.</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ5.21 Жд Р Фз<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>100 мм</td>
+      <td><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td>М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td>1,0<br><span class='optional'>1,5¹</span></td>
+      <td>IP54<br><span class='optional'>IP53¹</span><br><span class='optional'>IP55¹</span><br><span class='optional'>IP65¹</span><br><span class='optional'>IP66¹</span><br><span class='optional'>IP67¹</span><br><span class='optional'>IP68¹</span></td>
+      <td>УХЛ1<br><span class='optional'>Т1, Т2, Т3¹</span><br><span class='optional'>У1¹</span><br><span class='optional'>У2¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td>N3<br><span class='optional'>L1¹</span><br><span class='optional'>L2¹</span><br><span class='optional'>L3¹</span><br><span class='optional'>N1¹</span><br><span class='optional'>N2¹</span></td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ железнодорожные коррозионностойкие</div>
+      <div>предназначены для измерения избыточного давления различных не вязких и не кристаллизирующихся жидких и газообразных сред (вода, топливо, масло, воздух) в силовых и тормозных системах и установках подвижного состава железных дорог, метрополитена и вагонов трамваев, а также для измерения давления хладонов 12, 13, 22, 142 (в том числе хладонов с наличием масел).</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +250 °С *.</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70 °С.</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ5.22 Жд Р Фз<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - нержавеющая сталь</span></td>
+      <td>100 мм</td>
+      <td><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td>М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td>1,0<br><span class='optional'>1,5¹</span></td>
+      <td>IP65<br><span class='optional'>IP53¹</span><br><span class='optional'>IP55¹</span><br><span class='optional'>IP54¹</span><br><span class='optional'>IP66¹</span><br><span class='optional'>IP67¹</span><br><span class='optional'>IP68¹</span></td>
+      <td>УХЛ1<br><span class='optional'>Т1, Т2, Т3¹</span><br><span class='optional'>У1¹</span><br><span class='optional'>У2¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td>N3<br><span class='optional'>L1¹</span><br><span class='optional'>L2¹</span><br><span class='optional'>L3¹</span><br><span class='optional'>N1¹</span><br><span class='optional'>N2¹</span></td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ железнодорожные двухканальные</div>
+      <div>Предназначены для измерения избыточного давления неагрессивных по отношению к медным сплавам, не вязких и не кристаллизирующихся жидких и газообразных сред (вода, топливо, масло, воздух) в силовых и тормозных системах и установках подвижного состава железных дорог, метрополитена и вагонов трамваев, а также для измерения давления хладонов 12, 13, 22, 142 (в том числе хладонов с наличием масел). Имеют два независимых канала измерения.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -50 до +150 °С.</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70 °С.</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ5.21 Жд-2 Тэ Фз<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>100 мм</td>
+      <td><div class="cell-list"><div>0 - 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0 МПа</div></div></td>
+      <td>М12х1,5</td>
+      <td>1,5<br><span class='optional'>1,0¹</span></td>
+      <td>IP54<br><span class='optional'>IP53¹</span><br><span class='optional'>IP55¹</span><br><span class='optional'>IP65¹</span><br><span class='optional'>IP66¹</span><br><span class='optional'>IP67¹</span><br><span class='optional'>IP68¹</span></td>
+      <td>УХЛ1<br><span class='optional'>Т1, Т2, Т3¹</span><br><span class='optional'>У1¹</span><br><span class='optional'>У2¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td>N3<br><span class='optional'>L1¹</span><br><span class='optional'>L2¹</span><br><span class='optional'>L3¹</span><br><span class='optional'>N1¹</span><br><span class='optional'>N2¹</span></td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ судовые</div>
+      <div>Предназначены для измерения избыточного и вакуумметрического давления  не агрессивных по отношению к медным сплавам, не вязких и не кристаллизирующихся жидких и газообразных, не вязких и не кристаллизующихся сред, в т.ч. дизельного топлива, масла, воды, морской воды - с температурой до 150 °C, в окружающей среде, насыщенной парами смазочного масла, дизельного топлива и морской воды. Приборы могут изготавливаться для измерения давления хладонов, а также кислорода.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +250 °С *.</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70 °С.</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ5.21 Сд Р<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>100 мм</td>
+      <td><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td>М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td>1,0<br><span class='optional'>1,5¹</span></td>
+      <td>IP54<br><span class='optional'>IP53¹</span><br><span class='optional'>IP55¹</span><br><span class='optional'>IP65¹</span><br><span class='optional'>IP66¹</span><br><span class='optional'>IP67¹</span><br><span class='optional'>IP68¹</span></td>
+      <td>УХЛ1<br><span class='optional'>Т1, Т2, Т3¹</span><br><span class='optional'>У1¹</span><br><span class='optional'>У2¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td>N3<br><span class='optional'>L1¹</span><br><span class='optional'>L2¹</span><br><span class='optional'>L3¹</span><br><span class='optional'>N1¹</span><br><span class='optional'>N2¹</span></td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ судовые коррозионностойкие</div>
+      <div>Предназначены для измерения избыточного и вакуумметрического давления различных не вязких и не кристаллизующихся сред, в т.ч. дизельного топлива, масла, воды, морской воды - с температурой до 150 °C, в окружающей среде, насыщенной парами смазочного масла, дизельного топлива и морской воды. Приборы могут изготавливаться для измерения давления хладонов, а также кислорода.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +250 °С *.</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70 °С.</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ5.22 Сд Р<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - нержавеющая сталь</span></td>
+      <td>100 мм</td>
+      <td><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td>М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td>1,0<br><span class='optional'>1,5¹</span></td>
+      <td>IP65<br><span class='optional'>IP53¹</span><br><span class='optional'>IP55¹</span><br><span class='optional'>IP54¹</span><br><span class='optional'>IP66¹</span><br><span class='optional'>IP67¹</span><br><span class='optional'>IP68¹</span></td>
+      <td>УХЛ1<br><span class='optional'>Т1, Т2, Т3¹</span><br><span class='optional'>У1¹</span><br><span class='optional'>У2¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td>N3<br><span class='optional'>L1¹</span><br><span class='optional'>L2¹</span><br><span class='optional'>L3¹</span><br><span class='optional'>N1¹</span><br><span class='optional'>N2¹</span></td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ кислотостойкие</div>
+      <div>Предназначены для измерения избыточного, вакууметрического давления различных не вязких и не кристаллизующихся сред, в т.ч. жидкого, газообразного и водного раствора аммиака, сероводородосодержащих сред, газоводонефтяной эмульсии с температурой до +150 °С, содержанием Н2S и СO2 до 25 % по объему каждого, нефти и нефтепродуктов с содержанием парафина до 10 % весовых. Может применяться при наличии паров кислот и щелочей в окружающей атмосфере.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +250 °С *.</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70 °С.</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ6.52 МК Р<br><span class='table_subtext'>корпус - пластик</span><br><span class='table_subtext'>штуцер - нержавеющая сталь</span></td>
+      <td>160 мм</td>
+      <td><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td>М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td>1,0<br><span class='optional'>1,5¹</span></td>
+      <td>IP65<br><span class='optional'>IP53¹</span><br><span class='optional'>IP54¹</span><br><span class='optional'>IP55¹</span><br><span class='optional'>IP66¹</span><br><span class='optional'>IP67¹</span><br><span class='optional'>IP68¹</span></td>
+      <td>УХЛ1<br><span class='optional'>Т1, Т2, Т3¹</span><br><span class='optional'>У1¹</span><br><span class='optional'>У2¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td>N2<br><span class='optional'>L1¹</span><br><span class='optional'>L2¹</span><br><span class='optional'>L3¹</span><br><span class='optional'>N1¹</span><br><span class='optional'>N3¹</span></td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ точных измерений с возможностью заполнения без корректора "0"</div>
+      <div>Предназначены для измерения избыточного и вакуумметрического давления неагрессивных по отношению к медным сплавам, не вязких и не кристаллизующихся газа и пара, в том числе кислорода. Может примененяться в сферах метрологического контроля и надзора.  При заполнении полости корпуса демпфирующей жидкостью (глицерин, силикон) обеспечивается группа виброустойчивости V4.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +250 °С (без заполнения)*, от -50 до +120 °С (при заполнении глицерином-исполнение ИВГ), от -50 до +150 °С (при заполнении силиконом-исполнение ИВС).</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70 °С (без заполнения), от -40 до +60 °С (при заполнении глицерином-исполнение ИВГ),  от -50 до +50 °С (при заполнении силиконом-исполнение ИВС).</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ5.21 МТИ Р<br>ДМ5.21 МТИ Р ИВГ<br>ДМ5.21 МТИ Р ИВС<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>100 мм</td>
+      <td rowspan="2"><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td rowspan="2">М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td rowspan="2">0,6<br><span class='optional'>1,0¹</span></td>
+      <td rowspan="2">IP54<br><span class='optional'>IP53¹</span><br><span class='optional'>IP55¹</span><br><span class='optional'>IP65¹</span><br><span class='optional'>IP66¹</span><br><span class='optional'>IP67¹</span><br><span class='optional'>IP68¹</span></td>
+      <td rowspan="2">УХЛ1<br><span class='optional'>Т1, Т2, Т3¹</span><br><span class='optional'>У1¹</span><br><span class='optional'>У2¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td rowspan="2">без заполнения: группа L3
+<span class='optional'>( L1; L2; N1; N2; N3)¹</span>. 
+С заполнением: группа V4</td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ6.21 МТИ Р<br>ДМ6.21 МТИ Р ИВГ<br>ДМ6.21 МТИ Р ИВС<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>160 мм</td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ точных измерений коррозионностойкие с возможностью заполнения без корректора "0"</div>
+      <div>Предназначены для измерения избыточного и вакуумметрического давления различных не вязких и не кристаллизующихся жидкостей, газа и пара, в том числе кислорода. Может примененяться в сферах метрологического контроля и надзора.  При заполнении полости корпуса демпфирующей жидкостью (глицерин, силикон) обеспечивается группа виброустойчивости V4.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +250 °С (без заполнения)*, от -50 до +120 °С (при заполнении глицерином-исполнение ИВГ), от -50 до +150 °С (при заполнении силиконом-исполнение ИВС).</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70 °С (без заполнения), от -40 до +60 °С (при заполнении глицерином-исполнение ИВГ),  от -50 до +50 °С (при заполнении силиконом-исполнение ИВС).</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ5.22 МТИ Р<br>ДМ5.22 МТИ Р ИВГ<br>ДМ5.22 МТИ Р ИВС<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - нержавеющая сталь</span></td>
+      <td>100 мм</td>
+      <td rowspan="2"><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td rowspan="2">М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td rowspan="2">0,6<br><span class='optional'>1,0¹</span></td>
+      <td rowspan="2">IP65<br><span class='optional'>IP53¹</span><br><span class='optional'>IP55¹</span><br><span class='optional'>IP54¹</span><br><span class='optional'>IP66¹</span><br><span class='optional'>IP67¹</span><br><span class='optional'>IP68¹</span></td>
+      <td rowspan="2">УХЛ1<br><span class='optional'>Т1, Т2, Т3¹</span><br><span class='optional'>У1¹</span><br><span class='optional'>У2¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td rowspan="2">без заполнения: группа L3
+<span class='optional'>( L1; L2; N1; N2; N3)¹</span>. 
+С заполнением: группа V4</td>
+    </tr>
+    <tr>
+      <td class="br_column">ДМ6.22 МТИ Р<br>ДМ6.22 МТИ Р ИВГ<br>ДМ6.22 МТИ Р ИВС<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - нержавеющая сталь</span></td>
+      <td>160 мм</td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ точных измерений с корректором "0"</div>
+      <div>Предназначены для измерения избыточного и вакуумметрического давления не агрессивных по отношению к медным сплавам, не вязких и не кристаллизующихся, газа и пара, в том числе кислорода. Могут применяться в сферах метрологического контроля и надзора.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +250 °С*.</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70 °С.</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ6.31 МТИ Р<br><span class='table_subtext'>корпус - окрашенный алюминиевый сплав</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>160 мм</td>
+      <td><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td>М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td>0,6<br><span class='optional'>1,0¹</span></td>
+      <td>IP42<br><span class='optional'>IP40¹</span><br><span class='optional'>IP43¹</span></td>
+      <td>У3<br><span class='optional'>Т1, Т2, Т3¹</span><br><span class='optional'>У1¹</span><br><span class='optional'>У2¹</span></td>
+      <td>L3<br><span class='optional'>L1¹</span><br><span class='optional'>L2¹</span></td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ точных измерений с возможностью заполнения с корректором "0"</div>
+      <div>Предназначены для измерения избыточного и вакуумметрического давления не агрессивных по отношению к медным сплавам, не вязких и не кристаллизующихся газа и пара, в том числе кислорода. Могут применяться в сферах метрологического контроля и надзора. При заполнении полости корпуса демпфирующей жидкостью (глицерин, силикон) обеспечивается группа виброустойчивости V4.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +250 °С (без заполнения)*, от -50 до +120 °С (при заполнении глицерином-исполнение ИВГ), от -50 до +150 °С (при заполнении силиконом-исполнение ИВС).</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70 °С (без заполнения), от -40 до +60 °С (при заполнении глицерином-исполнение ИВГ),  от -50 до +50 °С (при заполнении силиконом-исполнение ИВС).</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ6.31 МТИ Р ИВГ<br>ДМ6.31 МТИ Р ИВС<br><span class='table_subtext'>корпус - окрашенный алюминиевый сплав</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>160 мм</td>
+      <td><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td>М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td>0,6<br><span class='optional'>1,0¹</span></td>
+      <td>IP65<br><span class='optional'>IP53¹</span><br><span class='optional'>IP55¹</span><br><span class='optional'>IP54¹</span><br><span class='optional'>IP66¹</span><br><span class='optional'>IP67¹</span><br><span class='optional'>IP68¹</span></td>
+      <td>У2<br><span class='optional'>Т1, Т2, Т3¹</span><br><span class='optional'>У1¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span><br><span class='optional'>УХЛ1¹</span></td>
+      <td>без заполнения: группа L3
+<span class='optional'>( L1; L2; N1; N2; N3)¹</span>. 
+С заполнением: группа V4</td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">МАНОМЕТРЫ точных измерений коррозионностойкие с возможностью заполнения с корректором "0"</div>
+      <div>Предназначены для измерения избыточного и вакуумметрического давления различных не вязких и не кристаллизующихся жидкостей, газа и пара, в том числе кислорода. Могут применяться в сферах метрологического контроля и надзора. При заполнении полости корпуса демпфирующей жидкостью (глицерин, силикон) обеспечивается группа виброустойчивости V4.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +250 °С (без заполнения)*, от -50 до +120 °С (при заполнении глицерином-исполнение ИВГ), от -50 до +150 °С (при заполнении силиконом-исполнение ИВС).</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70 °С (без заполнения), от -40 до +60 °С (при заполнении глицерином-исполнение ИВГ),  от -50 до +50 °С (при заполнении силиконом-исполнение ИВС).</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДМ6.32 МТИ Р ИВГ<br>ДМ6.32 МТИ Р ИВС<br><span class='table_subtext'>корпус - окрашенный алюминиевый сплав</span><br><span class='table_subtext'>штуцер - нержавеющая сталь</span></td>
+      <td>160 мм</td>
+      <td><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td>М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td>0,6<br><span class='optional'>1,0¹</span></td>
+      <td>IP65<br><span class='optional'>IP53¹</span><br><span class='optional'>IP55¹</span><br><span class='optional'>IP54¹</span><br><span class='optional'>IP66¹</span><br><span class='optional'>IP67¹</span><br><span class='optional'>IP68¹</span></td>
+      <td>У2<br><span class='optional'>Т1, Т2, Т3¹</span><br><span class='optional'>У1¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span><br><span class='optional'>УХЛ1¹</span></td>
+      <td>без заполнения: группа L3
+<span class='optional'>( L1; L2; N1; N2; N3)¹</span>. 
+С заполнением: группа V4</td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">НАПОРОМЕРЫ</div>
+      <div>Предназначены для измерения давления сухих, газообразных сред, не агрессивных по отношению к медным сплавам.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +150 (+250) оС *.</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70.</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДН3.11 Р; Тц<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>63 мм</td>
+      <td rowspan="3"><div class="cell-list"><div>от -0,16…-40 до 0 кПа</div><div>от -0,4…-20 до 0,6…20 кПа</div><div>от 0 до 0,16; 0,25; 0,4; 0,6; 1,0; 1,6; 2,5; 4; 6; 10; 16; 25; 40 кПа</div></div></td>
+      <td>M12×1,5<br><span class='optional'>G1/4¹</span></td>
+      <td>2,5<br><span class='optional'>1,5¹</span></td>
+      <td rowspan="3">IP42<br><span class='optional'>IP40¹</span><br><span class='optional'>IP43¹</span></td>
+      <td rowspan="3">У2<br><span class='optional'>У1¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td rowspan="3">L3<br><span class='optional'>L1¹</span><br><span class='optional'>L2¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДН5.11 Р<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>100 мм</td>
+      <td rowspan="2">М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td rowspan="2">1,5<br><span class='optional'>1,0¹</span><br><span class='optional'>2,5¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДН6.11 Р<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>160 мм</td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">НАПОРОМЕРЫ БАЙОНЕТНОЕ СОЕДИНЕНИЕ</div>
+      <div>Предназначены для измерения давления сухих, газообразных сред, не агрессивных по отношению к медным сплавам.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +150 (+250) оС *.</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70.</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДН3.11 БС Р; Тц<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>63 мм</td>
+      <td rowspan="3"><div class="cell-list"><div>от -0,16…-40 до 0 кПа</div><div>от -0,4…-20 до 0,6…20 кПа</div><div>от 0 до 0,16; 0,25; 0,4; 0,6; 1,0; 1,6; 2,5; 4; 6; 10; 16; 25; 40 кПа</div></div></td>
+      <td>M12×1,5<br><span class='optional'>G1/4¹</span></td>
+      <td>2,5<br><span class='optional'>1,5¹</span></td>
+      <td rowspan="3">IP54<br><span class='optional'>IP53¹</span><br><span class='optional'>IP55¹</span><br><span class='optional'>IP65¹</span></td>
+      <td rowspan="3">У2<br><span class='optional'>Т1, Т2, Т3¹</span><br><span class='optional'>У1¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span><br><span class='optional'>УХЛ1¹</span></td>
+      <td rowspan="3">L3<br><span class='optional'>L1¹</span><br><span class='optional'>L2¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДН5.11 БС Р<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>100 мм</td>
+      <td rowspan="2">М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td rowspan="2">1,5<br><span class='optional'>1,0¹</span><br><span class='optional'>2,5¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДН6.11 БС Р<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>160 мм</td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">НАПОРОМЕРЫ КОРРОЗИОННОСТОЙКИЕ</div>
+      <div>Предназначены для измерения давления различных сухих, газообразных сред.</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +150 (+250) оС *.</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70.</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ДН3.22 Р; Тц<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - нержавеющая сталь</span></td>
+      <td>63 мм</td>
+      <td><div class="cell-list"><div>от -0,16…-40 до 0 кПа</div><div>от -0,4…-20 до 0,6…20 кПа</div><div>от 0 до 0,16; 0,25; 0,4; 0,6; 1,0; 1,6; 2,5; 4; 6; 10; 16; 25; 40 кПа</div></div></td>
+      <td>M12×1,5<br><span class='optional'>G1/4¹</span></td>
+      <td>2,5<br><span class='optional'>1,5¹</span></td>
+      <td rowspan="3">IP54<br><span class='optional'>IP53¹</span><br><span class='optional'>IP55¹</span><br><span class='optional'>IP65¹</span></td>
+      <td rowspan="3">У2<br><span class='optional'>Т1, Т2, Т3¹</span><br><span class='optional'>У1¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span><br><span class='optional'>УХЛ1¹</span></td>
+      <td rowspan="3">L3<br><span class='optional'>L1¹</span><br><span class='optional'>L2¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДН5.22 Р<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - нержавеющая сталь</span></td>
+      <td>100 мм</td>
+      <td rowspan="2"><div class="cell-list"><div>-100 - 0 кПа;</div><div>-100 - 60; 150; 300; 500 кПа;</div><div>-0,1 - 0,9; 1,5; 2,4 МПа;</div><div>0 - 100; 160; 250; 400; 600 кПа;</div><div>0 - 1,0; 1,6; 2,5; 4,0; 6,0; 10; 16; 25; 40; 60 МПа</div></div></td>
+      <td rowspan="2">М20х1,5<br><span class='optional'>G1/2¹</span></td>
+      <td rowspan="2">1,5<br><span class='optional'>1,0¹</span><br><span class='optional'>2,5¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ДН6.22 Р<br><span class='table_subtext'>корпус - нержавеющая сталь</span><br><span class='table_subtext'>штуцер - нержавеющая сталь</span></td>
+      <td>160 мм</td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+
+<div class="page-content"><section class="item">
+<div class="header-section">
+  <div class="header-text">
+    <div class="param-block">
+      <div class="header-title">ТЕРМОМАНОМЕТРЫ</div>
+      <div>Предназначены для одновременного измерения температуры и избыточного давления не агрессивных по отношению к медным сплавам, не вязких и не кристаллизующихся жидкостей, газа и пара</div>
+    </div>
+    <div class="param-block">
+      <div><span>Диапазон температур измеряемой среды:</span> от -70 до +150 (+250) оС *.</div>
+      <div><span>Диапазон температур окружающей среды:</span> от -70 до +70.</div>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Модель</th><th>Диаметр</th><th>Пределы давления</th><th>Резьба</th><th>Класс точности</th><th>Степень IP</th><th>Климат</th><th>Вибро защита</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="br_column">ТБДМ-4 Р; Тц<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>80 мм</td>
+      <td rowspan="2"><div class="cell-list"><div>0 - 0,4; 0,6; 1,0; 1,6; 2,5 МПа</div><div>0 - 120; 150 0С</div></div></td>
+      <td rowspan="2">G1/2</td>
+      <td>1,5<br><span class='optional'>2,5¹</span></td>
+      <td rowspan="2">IP42<br><span class='optional'>IP40¹</span><br><span class='optional'>IP43¹</span></td>
+      <td rowspan="2">У2<br><span class='optional'>У1¹</span><br><span class='optional'>У3¹</span><br><span class='optional'>ОМ1¹</span><br><span class='optional'>ОМ2¹</span></td>
+      <td rowspan="2">L3<br><span class='optional'>L1¹</span><br><span class='optional'>L2¹</span></td>
+    </tr>
+    <tr>
+      <td class="br_column">ТБДМ-5 Р; Тц<br><span class='table_subtext'>корпус - окрашенная сталь</span><br><span class='table_subtext'>штуцер - медный сплав</span></td>
+      <td>100 мм</td>
+      <td>1,5<br><span class='optional'>1,0¹</span></td>
+    </tr>
+  </tbody>
+</table>
+</section></div>
+</body>
+</html>
