@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор каталога манометров</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            text-align: center;
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .drop-area {
+            border: 3px dashed #ccc;
+            border-radius: 15px;
+            padding: 60px 30px;
+            margin: 30px 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background-color: #f8f9fa;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .drop-area:hover, .drop-area.dragover {
+            border-color: #667eea;
+            background-color: #f0f5ff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.15);
+        }
+        
+        .drop-area-icon {
+            font-size: 48px;
+            color: #667eea;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+        
+        .drop-area:hover .drop-area-icon {
+            transform: scale(1.1);
+        }
+        
+        .drop-area-text {
+            color: #555;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .drop-area-subtext {
+            color: #888;
+            font-size: 14px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .btn-instruction {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .btn-instruction:hover {
+            background-color: rgba(102, 126, 234, 0.1);
+        }
+        
+        .status {
+            margin-top: 30px;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .status.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            color: #888;
+            font-size: 12px;
+        }
+        
+        .floating-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.floating-element {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0;
+    filter: blur(8px);
+    background: radial-gradient(circle at center,
+        rgba(255, 255, 255, 0.5) 0%,
+        rgba(255, 255, 255, 0.1) 60%,
+        transparent 100%);
+    animation: float 18s infinite ease-in-out;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(100vh) scale(0.6) rotate(0deg);
+        opacity: 0;
+    }
+    20% {
+        opacity: 0.7;
+    }
+    50% {
+        transform: translateY(-20vh) scale(1.1) rotate(180deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(-120vh) scale(0.5) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Светящиеся линии */
+.glow-line {
+    position: absolute;
+    width: 2px;
+    height: 80px;
+    background: linear-gradient(to top, rgba(255,255,255,0), rgba(255,255,255,0.5));
+    filter: blur(1px);
+    animation: moveLine 10s linear infinite;
+    opacity: 0.3;
+}
+
+@keyframes moveLine {
+    0% {
+        transform: translateY(100vh);
+    }
+    100% {
+        transform: translateY(-150px);
+    }
+}
+
+        
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+                margin: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .drop-area {
+                padding: 40px 20px;
+            }
+            
+            .drop-area-icon {
+                font-size: 36px;
+            }
+            
+            .drop-area-text {
+                font-size: 16px;
+            }
+            
+            .btn {
+                padding: 12px 25px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements" id="floating-elements"></div>
+    
+    <div class="container">
+        <div class="logo">⚡</div>
+        <h1>Генератор каталога манометров</h1>
+        <p class="subtitle">Загрузите ваш Excel-файл с данными о манометрах, и мы сгенерируем профессиональный каталог в формате PDF</p>
+        
+        <div class="drop-area" id="drop-area">
+            <div class="drop-area-icon">📁</div>
+            <div class="drop-area-text">Перетащите файл Excel сюда</div>
+            <div class="drop-area-subtext">или нажмите для выбора файла</div>
+            <input type="file" id="file-input" accept=".xlsx,.xls" style="display: none;">
+        </div>
+        
+        <button class="btn" id="generate-btn">Сгенерировать каталог</button>
+        <a class="btn btn-instruction" href="#" id="instruction-btn">Скачать инструкцию</a>
+        
+        <div class="status" id="status"></div>
+        
+        <div class="footer">
+            © 2025 Генератор каталога манометров. Все права защищены.
+        </div>
+    </div>
+
+<script>
+    // Плавающие элементы
+// 🌌 Улучшенные плавающие эффекты
+const floatingElements = document.getElementById('floating-elements');
+
+// Мягкие светящиеся шары
+for (let i = 0; i < 10; i++) {
+    const element = document.createElement('div');
+    element.className = 'floating-element';
+    const size = Math.random() * 120 + 60;
+    element.style.width = `${size}px`;
+    element.style.height = `${size}px`;
+    element.style.left = Math.random() * 100 + '%';
+    element.style.background = `radial-gradient(circle at center,
+        rgba(255,255,255,${0.2 + Math.random() * 0.3}) 0%,
+        rgba(255,255,255,0.05) 60%,
+        transparent 100%)`;
+    element.style.animationDuration = `${15 + Math.random() * 10}s`;
+    element.style.animationDelay = `${Math.random() * 8}s`;
+    floatingElements.appendChild(element);
+}
+
+// Светящиеся линии (эффект дождя света)
+for (let i = 0; i < 15; i++) {
+    const line = document.createElement('div');
+    line.className = 'glow-line';
+    line.style.left = Math.random() * 100 + '%';
+    line.style.animationDuration = `${6 + Math.random() * 6}s`;
+    line.style.animationDelay = `${Math.random() * 6}s`;
+    floatingElements.appendChild(line);
+}
+
+
+    const dropArea = document.getElementById('drop-area');
+    const fileInput = document.getElementById('file-input');
+    const status = document.getElementById('status');
+    const generateBtn = document.getElementById('generate-btn');
+    const instructionBtn = document.getElementById('instruction-btn');
+
+    // Prevent default drag behaviors
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, preventDefaults, false);
+        document.body.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropArea.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, unhighlight, false);
+    });
+
+    function highlight() {
+        dropArea.classList.add('dragover');
+    }
+
+    function unhighlight() {
+        dropArea.classList.remove('dragover');
+    }
+
+    // Обработка файла
+    dropArea.addEventListener('drop', handleDrop, false);
+    dropArea.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => handleFiles(fileInput.files));
+
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        handleFiles(dt.files);
+    }
+
+    function handleFiles(files) {
+        if (files.length === 0) return;
+
+        const file = files[0];
+        const fileType = file.name.split('.').pop().toLowerCase();
+
+        if (fileType !== 'xlsx') {
+            showStatus('Пожалуйста, загрузите файл в формате Excel (.xlsx)', 'error');
+            resetDropArea();
+            return;
+        }
+
+        // Обновляем отображение
+        displayFile(file);
+        fileInput.files = createFileList(file);
+        generateBtn.disabled = false;
+        showStatus('Файл "' + file.name + '" успешно загружен. Нажмите "Сгенерировать каталог".', 'success');
+    }
+
+    function displayFile(file) {
+        dropArea.innerHTML = `
+            <div class="drop-area-icon">📄</div>
+            <div class="drop-area-text" style="color:#333;">${file.name}</div>
+            <div class="drop-area-subtext" style="color:#888;">Файл готов к загрузке</div>
+        `;
+    }
+
+    function resetDropArea() {
+        dropArea.innerHTML = `
+            <div class="drop-area-icon">📁</div>
+            <div class="drop-area-text">Перетащите файл Excel сюда</div>
+            <div class="drop-area-subtext">или нажмите для выбора файла</div>
+        `;
+        generateBtn.disabled = true;
+        fileInput.value = '';
+    }
+
+    function createFileList(file) {
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        return dataTransfer.files;
+    }
+
+    function showStatus(message, type) {
+        status.textContent = message;
+        status.className = 'status ' + type;
+        status.style.display = 'block';
+        setTimeout(() => {
+            status.style.display = 'none';
+        }, 5000);
+    }
+
+    generateBtn.addEventListener('click', async function() {
+        const file = fileInput.files[0];
+        if (!file) {
+            showStatus('Пожалуйста, выберите файл перед отправкой!', 'error');
+            return;
+        }
+
+        showStatus('Загрузка в процессе... Файл обрабатывается ⏳', 'success');
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const response = await fetch('/tompribor_generator/api/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) throw new Error('Ошибка при обработке файла');
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'catalog.pdf';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+
+            showStatus('Каталог успешно сгенерирован и скачан! 🎉', 'success');
+            resetDropArea();
+        } catch (error) {
+            console.error(error);
+            showStatus('Ошибка при обработке файла 😢', 'error');
+        }
+    });
+
+    instructionBtn.addEventListener('click', async function(e) {
+        e.preventDefault();
+
+        try {
+            const response = await fetch('/tompribor_generator/api/instruction');
+            if (!response.ok) throw new Error('Не удалось загрузить инструкцию');
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Инструкция.pdf';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+
+            showStatus('Инструкция успешно скачана 📘', 'success');
+        } catch (error) {
+            console.error(error);
+            showStatus('Ошибка при скачивании инструкции 😔', 'error');
+        }
+    });
+
+    // Кнопка по умолчанию неактивна
+    generateBtn.disabled = true;
+</script>
+
+
+</body>
+</html>

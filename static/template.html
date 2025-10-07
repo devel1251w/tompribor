@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ title }}</title>
+<style>
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #1a2d40;
+  }
+
+/* Хидер внутри секции — без тени */
+.header-section {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  padding: 3px 10px 14px 14px;
+  border-radius: 8px;
+
+  /* стеклянный фон с лёгкой прозрачностью */
+  background: linear-gradient(135deg, rgba(215, 236, 255, 0.4), rgba(188, 223, 255, 0.25));
+  border: 1px solid rgba(159, 202, 247, 0.6);
+  backdrop-filter: saturate(160%) contrast(105%);
+  -webkit-backdrop-filter: saturate(160%) contrast(105%);
+
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.header-text {
+  flex: 1;
+  font-size: 15px;
+  line-height: 1.5;
+  margin-right: 16px;
+}
+
+
+.header-images img {
+  height: auto;
+  max-height: 200px;    /* ограничиваем высоту, чтобы не выше текста */
+  width: auto;
+  flex: 1 1 auto;       /* картинки делят доступное пространство равномерно */
+  object-fit: contain;
+  border-radius: 12px;
+  border: 2px solid #9fcaf7;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+
+  .header-title {
+    font-weight: 700;
+    font-size: 22px;
+    color: #0c4a8c;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: auto;
+  border-radius: 6px;
+  overflow: hidden;
+
+  background: transparent; /* полностью прозрачный фон */
+  border: 1px solid rgba(198, 224, 249, 0.6); /* рамка с лёгкой прозрачностью */
+<!--  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* мягкая тень */-->
+  margin-bottom: 12px;
+}
+
+
+  thead th {
+    background: #0c4a8c;
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #0a3a6c;
+  }
+
+tbody td {
+  padding: 10px 14px;
+  text-align: center;
+  font-size: 14px;
+  color: #1a2d40;
+  border: 1px solid rgba(214, 235, 252, 0.6);
+
+  background: rgba(255, 255, 255, 0.25); /* полупрозрачный белый */
+  backdrop-filter: saturate(160%); /* усиливает цвета подложки, без размытия */
+  -webkit-backdrop-filter: saturate(160%);
+
+  line-height: 1;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+/* убираем чередование строк */
+tbody tr:nth-child(even) td {
+  background: transparent; /* полностью прозрачный фон */
+}
+
+/* убираем подсветку при наведении */
+tbody tr:hover td {
+  background: transparent; /* полностью прозрачный фон */
+  transition: none;
+}
+
+
+  td span.optional {
+    font-style: italic;
+    color: #557a9e;
+    font-size: 0.85em;
+  }
+
+  .note {
+    font-size: 0.9em;
+    font-style: italic;
+    color: #47688a;
+    margin-top: 8px;
+    text-align: right;
+  }
+
+  .cell-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .cell-list div {
+    padding: 3px 0;
+    border-bottom: 1px dashed #c6e0f9;
+  }
+
+  .cell-list div:last-child {
+    border-bottom: none;
+  }
+
+.param-block {
+  margin-top: 12px;
+  padding: 12px 14px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(234, 246, 255, 0.45),
+    rgba(200, 230, 255, 0.25)
+  ); /* нежный стеклянный градиент */
+
+  border-left: 4px solid rgba(12, 74, 140, 0.7);
+  border-radius: 6px;
+  color: #1a2d40;
+  font-size: 14px;
+  line-height: 1.5;
+
+  backdrop-filter: saturate(160%) contrast(110%);
+  -webkit-backdrop-filter: saturate(160%) contrast(110%);
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+  .param-block span {
+    font-weight: 600;
+    color: #0c4a8c;
+  }
+
+  .extra-options {
+    margin-top: 30px;
+  }
+
+  .extra-options h3 {
+    font-size: 18px;
+    color: #0c4a8c;
+    margin-bottom: 14px;
+    border-bottom: 2px solid #9fcaf7;
+    display: inline-block;
+    padding-bottom: 2px;
+  }
+
+  .options-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+
+  .option-card {
+    flex: 1 1 220px;
+    background: #fff;
+    border: 1px solid #c6e0f9;
+    border-radius: 6px;
+    padding: 14px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .option-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+  }
+
+  .option-card img {
+    max-width: 70px;
+    max-height: 70px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 2px solid #9fcaf7;
+    background: #f4faff;
+    padding: 4px;
+  }
+
+  .option-card p {
+    font-size: 13px;
+    color: #1a2d40;
+    line-height: 1.4;
+  }
+
+  .table_subtext {
+    font-style: italic;
+    color: #557a9e;
+    font-size: 0.75em;
+  }
+
+.page-content {
+  padding-top: 5mm;   /* отступ сверху страницы */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.item {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin-bottom: 3mm;
+
+  border: 2px solid rgba(159, 202, 247, 0.6); /* чуть прозрачная голубая рамка */
+  border-radius: 8px;
+
+  background: rgba(255, 255, 255, 0.6); /* белый с лёгкой прозрачностью */
+  backdrop-filter: blur(10px) saturate(150%); /* эффект размытия заднего фона */
+  -webkit-backdrop-filter: blur(10px) saturate(150%); /* поддержка Safari */
+
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1); /* мягкая тень */
+  padding: 18px;
+}
+
+.header-images {
+  display: flex;
+  flex-direction: column; /* текст сверху, картинки снизу */
+  align-items: center;
+  max-width: 50%;
+}
+
+.images-label {
+  background: linear-gradient(135deg, #d7ecff, #bcdfff);
+  border: 1px solid #9fcaf7;
+  border-radius: 6px;
+  padding: 4px 10px;       /* чуть компактнее */
+  font-size: 13px;         /* текст немного меньше */
+  font-weight: 600;
+  color: #0c4a8c;
+  margin: 2px 0 4px 0;     /* верхний отступ всего 2px, нижний 8px */
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.images-wrapper {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  justify-content: center;
+}
+
+  .br_column {
+      width: 170px;              /* ширина колонки */
+  }
+
+    @page {
+  size: A4;
+  margin: 0mm;
+}
+
+/* Фон для всей страницы */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("bg3.png") center/cover no-repeat;
+  z-index: -1;
+}
+
+</style>
+</head>
+<body>
+  {{ content }}
+</body>
+</html>
